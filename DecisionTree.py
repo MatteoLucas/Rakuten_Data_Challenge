@@ -1,12 +1,11 @@
-def dt_train_and_predict(teacher_mode) :
-    """Renvoie la prediction et le model pour un arbre de décision si on est en teacher mode"""
+def dt_train(teacher_mode) :
+    """Entraine le modèle decision tree et le sauvegarde"""
     import TextProcessing as TP
     # Pour la visualisation des données
     import matplotlib.pyplot as plt  # Pour réaliser des graphiques
     from sklearn.model_selection import GridSearchCV
     # Pour les arbres de décision
     from sklearn.tree import DecisionTreeClassifier, plot_tree
-    from sklearn.metrics import classification_report
 
     X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode)
     # Création du modèle de l'arbre de décision avec GridSearchCV
@@ -24,11 +23,16 @@ def dt_train_and_predict(teacher_mode) :
         plt.figure(figsize=(20,10))
         plot_tree(dt_model, filled=True)
         plt.show()
+    from joblib import dump
+    dump(dt_model, 'Trained_Model/dt.model') 
 
+def dt_predict(X_test):
+    """Effectue une prédiction à partir de dt.model"""
+    from joblib import load
+    try :
+        dt_model = load('Trained_Model/dt.model') 
+    except FileNotFoundError :
+        print("entrainez d'abord le modèle avec la fonction dt_train()")
     # Prédiction et évaluation
     Y_pred_dt = dt_model.predict(X_test)
-
-    if not teacher_mode:
-        print(classification_report(Y_test, Y_pred_dt))
-
-    Y_pred_dt, dt_model
+    return Y_pred_dt
