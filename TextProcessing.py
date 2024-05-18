@@ -47,9 +47,11 @@ def docs_to_tfidf(docs_raw, tfidf) :
   from sklearn.feature_extraction.text import TfidfVectorizer
   spacy_nlp = spacy.load("fr_core_news_sm")
   docs_clean = [raw_to_tokens(doc, spacy_nlp) for doc in docs_raw]
-  if tfidf != None :
+  if tfidf == None :
     tfidf = TfidfVectorizer()
-  X_tfidf = tfidf.fit_transform(docs_clean)
+    X_tfidf = tfidf.fit_transform(docs_clean)
+  else : 
+    X_tfidf = tfidf.transform(docs_clean)
   return X_tfidf, tfidf
 
 def ouverture_fichier(file_name):
