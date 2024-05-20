@@ -23,6 +23,7 @@ def normalize_accent(string):
 
   return string
 
+
 def raw_to_tokens(raw_string, spacy_nlp):
     # Write code for lower-casing
   spacy_tokens = raw_string.lower()
@@ -54,11 +55,13 @@ def docs_to_tfidf(docs_raw, tfidf) :
     X_tfidf = tfidf.transform(docs_clean)
   return X_tfidf, tfidf
 
+
 def ouverture_fichier(file_name):
   import pandas as pd
   # Lire les données depuis le fichier CSV
   data = pd.read_csv(file_name, header=0, sep=',', decimal='.')
   return data
+
 
 def create_X_train_tfidf(file, tfidf=None) :
   import pickle
@@ -164,9 +167,7 @@ def split_file(file_base, parts_directory = "Trained_Model/", file_extension = "
       with open(chunk_file_name, 'wb') as chunk_file:
         chunk_file.write(chunk)
       chunk_count += 1
-      print(f"Created {chunk_file_name} with size {len(chunk)} bytes.")
 
-  print(f"Total chunks created: {chunk_count}")
 
 def merge_files(file_base, parts_directory = "Trained_Model/", file_extension = ".model"):
   """Merges multiple chunk files into a single binary file.
@@ -186,21 +187,34 @@ def merge_files(file_base, parts_directory = "Trained_Model/", file_extension = 
         break
       with open(chunk_file_name, 'rb') as chunk_file:
         merged_file.write(chunk_file.read())
-      print(f"Merged {chunk_file_name}.")
       part_number += 1
 
-  print(f"File merging completed into {output_file}.")
 
 def load_model(file_base, parts_directory = "Trained_Model/", file_extension = ".model") :
+  '''
+  Args:
+    parts_directory (str): Directory containing the chunk files.
+    file_base (str): Base name of the chunk files without the part number and extension.
+    file_extension (str): Extension of the chunk files.
+  '''
   from joblib import load
   import os
+  if not os.path.exists(parts_directory+file_base+"_part0"+file_extension) :
+    raise FileNotFoundError("Entrainez d'abord le modèle avec la fonction "+file_base+"_train()")
   merge_files(file_base, parts_directory, file_extension)
   model, X_train, X_test, Y_train, Y_test = load(parts_directory+file_base+file_extension)
   os.remove(parts_directory+file_base+file_extension)
-  print("File loaded and delete")
   return model, X_train, X_test, Y_train, Y_test
 
+
 def save_model(model_list, file_base, parts_directory = "Trained_Model/", file_extension = ".model") :
+  '''
+  Args:
+    model_list (list): [svc, X_train, X_test, Y_train, Y_test]
+    parts_directory (str): Directory containing the chunk files.
+    file_base (str): Base name of the chunk files without the part number and extension.
+    file_extension (str): Extension of the chunk files.
+  '''
   from joblib import dump
   import os
   dump(model_list, parts_directory+file_base+file_extension)
