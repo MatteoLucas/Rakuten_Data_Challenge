@@ -122,13 +122,13 @@ def get_X_Y(teacher_mode) :
     return X_train_tfidf, X_test_tfidf, Y_train, None
 
 
-def save_predictions_to_csv(Y_pred, csv_name):
+def save_predictions_to_csv(Y_pred, csv_name, X_train):
     """Sauvegarde les prédictions dans un fichier CSV."""
     import pandas as pd
     
     # Créer un DataFrame avec les vraies valeurs et les prédictions
     results_df = pd.DataFrame({
-        'Id': [i for i in range(len(Y_pred))],
+        'Id': [i for i in range(len(X_train),len(X_train)+len(Y_pred))],
         'Predicted_prdtypecode': Y_pred
     })
     
