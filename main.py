@@ -8,7 +8,7 @@ def predict(model_name, teacher_mode):
     from sklearn.metrics import f1_score
     import TextProcessing as TP
 
-    model, X_train, X_test, Y_train, Y_test = TP.load_model(model_name) 
+    model, X_train, X_test, Y_train, Y_test = TP.load_model(model_name, teacher_mode) 
 
     if teacher_mode :
         X_train, X_test, Y_train, Y_test = TP.get_X_Y(True) #Pour etre sur que la prédiction sera sur le bon X_test

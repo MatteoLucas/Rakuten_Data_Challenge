@@ -190,15 +190,18 @@ def merge_files(file_base, parts_directory = "Trained_Model/", file_extension = 
       part_number += 1
 
 
-def load_model(file_base, parts_directory = "Trained_Model/", file_extension = ".model") :
+def load_model(file_base, teacher_mode,  parts_directory = "Trained_Model/", file_extension = ".model") :
   '''
   Args:
-    parts_directory (str): Directory containing the chunk files.
     file_base (str): Base name of the chunk files without the part number and extension.
+    teacher_mode (bool): is teacher testing ?
+    parts_directory (str): Directory containing the chunk files.
     file_extension (str): Extension of the chunk files.
   '''
   from joblib import load
   import os
+  if teacher_mode :
+    parts_directory = "Trained_Model_ForTeacher/"
   if not os.path.exists(parts_directory+file_base+"_part0"+file_extension) :
     raise FileNotFoundError("Entrainez d'abord le modèle avec la fonction "+file_base+"_train()")
   merge_files(file_base, parts_directory, file_extension)
@@ -207,16 +210,19 @@ def load_model(file_base, parts_directory = "Trained_Model/", file_extension = "
   return model, X_train, X_test, Y_train, Y_test
 
 
-def save_model(model_list, file_base, parts_directory = "Trained_Model/", file_extension = ".model") :
+def save_model(model_list, file_base, teacher_mode, parts_directory = "Trained_Model/", file_extension = ".model") :
   '''
   Args:
     model_list (list): [svc, X_train, X_test, Y_train, Y_test]
     parts_directory (str): Directory containing the chunk files.
+    teacher_mode (bool): is teacher testing ?
     file_base (str): Base name of the chunk files without the part number and extension.
     file_extension (str): Extension of the chunk files.
   '''
   from joblib import dump
   import os
+  if teacher_mode :
+    parts_directory = "Trained_Model_ForTeacher/"
   dump(model_list, parts_directory+file_base+file_extension)
   split_file(file_base, parts_directory, file_extension)
   os.remove(parts_directory+file_base+file_extension)
