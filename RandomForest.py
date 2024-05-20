@@ -2,8 +2,7 @@ def rf_train(teacher_mode) :
     """Entraine le modèle Random Forest et le sauvegarde"""
     import TextProcessing as TP
     from sklearn.ensemble import RandomForestClassifier
-    from joblib import dump
-
+    
     X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode)
 
     # Définition du modèle Random Forest avec les meilleurs paramètres trouvés
@@ -12,17 +11,16 @@ def rf_train(teacher_mode) :
     rf_model.fit(X_train, Y_train)
     
     # Sauvegarde du modèle
-    dump([rf_model, X_train, X_test, Y_train, Y_test], 'Trained_Model/rf.model') 
+    TP.save_model([rf_model, X_train, X_test, Y_train, Y_test], 'rf') 
     print("Modèle entraîné et sauvegardé avec succès.")
 
 def rf_predict(teacher_mode):
     """Effectue une prédiction à partir de rf.model"""
-    from joblib import load
     from sklearn.metrics import f1_score
     import sys
     import TextProcessing as TP
     try :
-        rf_model, X_train, X_test, Y_train, Y_test = load('Trained_Model/rf.model') 
+        rf_model, X_train, X_test, Y_train, Y_test = TP.load_model('rf')
     except FileNotFoundError :
         print("Entrainez d'abord le modèle avec la fonction rf_train()")
         sys.exit()

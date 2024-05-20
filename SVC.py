@@ -15,22 +15,21 @@ def svc_train(teacher_mode):
     svc.fit(X_train, Y_train)
 
     # Sauvegarder le modèle entraîné
-    dump([svc, X_train, X_test, Y_train, Y_test], 'Trained_Model/svc.model')
+    TP.save_model([svc, X_train, X_test, Y_train, Y_test], 'svc') 
 
     print("Modèle entraîné et sauvegardé avec succès.")
 
 def svc_predict(teacher_mode):
     """Effectue une prédiction à partir de rf.model"""
-    from joblib import load
     from sklearn.metrics import f1_score
     import sys
     import TextProcessing as TP
     try :
-        svc_model, X_train, X_test, Y_train, Y_test = load('Trained_Model/svc.model') 
+        svc_model, X_train, X_test, Y_train, Y_test = TP.load_model('svc') 
     except FileNotFoundError :
         print("Entrainez d'abord le modèle avec la fonction rf_train()")
         sys.exit()
-        
+
     if teacher_mode :
         X_train, X_test, Y_train, Y_test = TP.get_X_Y(True) #Pour etre sur que la prédiction sera sur le bon X_test
 

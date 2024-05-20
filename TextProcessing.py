@@ -131,3 +131,78 @@ def save_predictions_to_csv(Y_pred, csv_name):
     results_df.to_csv("Predictions/"+csv_name, index=False)
     
     print(f"Prédictions sauvegardées dans {"Predictions/"+csv_name}")
+
+
+def split_file(file_base, parts_directory = "Trained_Model/", file_extension = ".model", chunk_size=12 * 1024 * 1024):
+  """Splits a binary file into multiple chunks of a given size.
+  
+  Args:
+    parts_directory (str): Directory containing the chunk files.
+    file_base (str): Base name of the chunk files without the part number and extension.
+    file_extension (str): Extension of the chunk files.
+    chunk_size (float): Maximum size of each chunk in bytes (default is 12.5 MB).
+  """
+  import os
+
+  part_number = 0
+  while True:
+    chunk_file_name = os.path.join(parts_directory, f"{file_base}_part{part_number}{file_extension}")
+    if not os.path.exists(chunk_file_name):
+      break
+    os.remove(parts_directory+file_base+"_part"+str(part_number)+file_extension)
+    part_number += 1  
+
+  file_path = parts_directory+file_base+file_extension
+  file_base, file_extension = os.path.splitext(file_path)
+  with open(file_path, 'rb') as file:
+    chunk_count = 0
+    while True:
+      chunk = file.read(int(chunk_size))
+      if not chunk:
+        break
+      chunk_file_name = f"{file_base}_part{chunk_count}{file_extension}"
+      with open(chunk_file_name, 'wb') as chunk_file:
+        chunk_file.write(chunk)
+      chunk_count += 1
+      print(f"Created {chunk_file_name} with size {len(chunk)} bytes.")
+
+  print(f"Total chunks created: {chunk_count}")
+
+def merge_files(file_base, parts_directory = "Trained_Model/", file_extension = ".model"):
+  """Merges multiple chunk files into a single binary file.
+  
+  Args:
+    parts_directory (str): Directory containing the chunk files.
+    file_base (str): Base name of the chunk files without the part number and extension.
+    file_extension (str): Extension of the chunk files.
+  """
+  import os
+  output_file = parts_directory+file_base+file_extension
+  with open(output_file, 'wb') as merged_file:
+    part_number = 0
+    while True:
+      chunk_file_name = os.path.join(parts_directory, f"{file_base}_part{part_number}{file_extension}")
+      if not os.path.exists(chunk_file_name):
+        break
+      with open(chunk_file_name, 'rb') as chunk_file:
+        merged_file.write(chunk_file.read())
+      print(f"Merged {chunk_file_name}.")
+      part_number += 1
+
+  print(f"File merging completed into {output_file}.")
+
+def load_model(file_base, parts_directory = "Trained_Model/", file_extension = ".model") :
+  from joblib import load
+  import os
+  merge_files(file_base, parts_directory, file_extension)
+  model, X_train, X_test, Y_train, Y_test = load(parts_directory+file_base+file_extension)
+  os.remove(parts_directory+file_base+file_extension)
+  print("File loaded and delete")
+  return model, X_train, X_test, Y_train, Y_test
+
+def save_model(model_list, file_base, parts_directory = "Trained_Model/", file_extension = ".model") :
+  from joblib import dump
+  import os
+  dump(model_list, parts_directory+file_base+file_extension)
+  split_file(file_base, parts_directory, file_extension)
+  os.remove(parts_directory+file_base+file_extension)
