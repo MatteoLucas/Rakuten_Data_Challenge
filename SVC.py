@@ -30,6 +30,10 @@ def svc_predict(teacher_mode):
     except FileNotFoundError :
         print("Entrainez d'abord le modèle avec la fonction rf_train()")
         sys.exit()
+        
+    if teacher_mode :
+        X_train, X_test, Y_train, Y_test = TP.get_X_Y(True) #Pour etre sur que la prédiction sera sur le bon X_test
+
     # Prédiction et évaluation
     Y_pred = svc_model.predict(X_test)
     if not teacher_mode :
