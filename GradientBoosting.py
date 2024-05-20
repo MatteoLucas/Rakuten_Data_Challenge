@@ -7,13 +7,13 @@ def gb_train(teacher_mode) :
 
     X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode)
     gb_param_grid = {
-    'learning_rate': [0.01, 0.1],
-    'max_depth': [3, 10],
+    'learning_rate': [0.01, 0.1, 1],
+    'max_depth': [3, 6, 10],
     'n_estimators': [250, 400],
     }
     # Configurer et entraîner le modèle Random Forest
     gb_model = GradientBoostingClassifier()
-    gb_random_search = GridSearchCV(estimator=gb_model, param_grid=gb_param_grid, cv=[(slice(None), slice(None))], scoring='f1_micro', n_jobs=-1, verbose=10)
+    gb_random_search = GridSearchCV(estimator=gb_model, param_grid=gb_param_grid, cv=2, scoring='f1_micro', n_jobs=-1, verbose=10)
     gb_random_search.fit(X_train, Y_train)
 
     # Affichage du meilleur modèle et de ses paramètres
