@@ -96,7 +96,6 @@ def get_X_Y(teacher_mode) :
   """
   import TextProcessing as TP
   from joblib import load
-  from scipy import sparse
   from sklearn.model_selection import train_test_split
 
   #On essaye d'ouvrir la matrice tfidf de X_train si elle existe sinon, on la crée

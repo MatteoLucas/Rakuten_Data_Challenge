@@ -1,6 +1,5 @@
 def svc_train(teacher_mode):
     """Entraine le modèle SVC et le sauvegarde"""
-    from joblib import dump
     from sklearn.svm import SVC
     import TextProcessing as TP
 
