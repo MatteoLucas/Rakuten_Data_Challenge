@@ -1,45 +1,39 @@
-def svc_train() :
-    """Entraine le modèle svc et le sauvegarde"""
+def svc_train(teacher_mode):
+    """Entraine le modèle SVC et le sauvegarde"""
     from joblib import dump
-    from sklearn.model_selection import GridSearchCV
     from sklearn.svm import SVC
     import TextProcessing as TP
-    X_train, X_test, Y_train, Y_test = TP.get_X_Y(False)
 
-    # Définir le modèle SVC
-    svc = SVC()
+    # Récupérer les données d'entraînement et de test
+    X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode)
 
-    # Définir la grille des hyperparamètres à rechercher
-    param_grid = {
-        'C': [200, 100, 300],
-        'gamma': [1, 5, 10],
-        'kernel': ['rbf']
-    }
-
-    # Mettre en place la recherche par validation croisée
-    grid_search = GridSearchCV(svc, param_grid, refit=True, verbose=10, cv=3, n_jobs=-1)
+    # Définition du modèle SVC avec les meilleurs paramètres trouvés
+    best_params = {'C': 100, 'gamma': 1, 'kernel': 'rbf'}
+    svc = SVC(C=best_params['C'], gamma=best_params['gamma'], kernel=best_params['kernel'])
 
     # Entraîner le modèle avec les données d'entraînement
-    grid_search.fit(X_train, Y_train)
+    svc.fit(X_train, Y_train)
 
-    # Afficher les meilleurs paramètres trouvés par la validation croisée
-    print(f'Best Parameters: {grid_search.best_params_}')
+    # Sauvegarder le modèle entraîné
+    dump([svc, X_train, X_test, Y_train, Y_test], 'Trained_Model/svc.model')
 
-    # Prédire avec le meilleur modèle trouvé
-    best_model = grid_search.best_estimator_
-    # Sauvegarde du modèle
-    dump([best_model, X_train, X_test, Y_train, Y_test], 'Trained_Model/svc.model')
+    print("Modèle entraîné et sauvegardé avec succès.")
 
-def svc_predict():
+def svc_predict(teacher_mode):
     """Effectue une prédiction à partir de rf.model"""
     from joblib import load
     from sklearn.metrics import f1_score
+    import sys
     try :
         svc_model, X_train, X_test, Y_train, Y_test = load('Trained_Model/svc.model') 
     except FileNotFoundError :
-        print("entrainez d'abord le modèle avec la fonction rf_train()")
+        print("Entrainez d'abord le modèle avec la fonction rf_train()")
+        sys.exit()
     # Prédiction et évaluation
     Y_pred = svc_model.predict(X_test)
-
-    print(f1_score(Y_test,Y_pred, average="micro"))
+    if not teacher_mode :
+        print(f1_score(Y_test,Y_pred, average="micro"))
     return Y_pred
+
+if __name__ == "__main__":
+    svc_predict(False)
