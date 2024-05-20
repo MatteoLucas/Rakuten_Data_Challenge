@@ -128,7 +128,7 @@ def save_predictions_to_csv(Y_pred, csv_name, X_train):
     
     # Créer un DataFrame avec les vraies valeurs et les prédictions
     results_df = pd.DataFrame({
-        'Id': [i for i in range(len(X_train),len(X_train)+len(Y_pred))],
+        'Id': [i for i in range(X_train.shape[0],X_train.shape[0]+len(Y_pred))],
         'Predicted_prdtypecode': Y_pred
     })
     
