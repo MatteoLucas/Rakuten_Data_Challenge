@@ -24,6 +24,7 @@ def svc_predict(teacher_mode):
     from joblib import load
     from sklearn.metrics import f1_score
     import sys
+    import TextProcessing as TP
     try :
         svc_model, X_train, X_test, Y_train, Y_test = load('Trained_Model/svc.model') 
     except FileNotFoundError :
@@ -33,6 +34,7 @@ def svc_predict(teacher_mode):
     Y_pred = svc_model.predict(X_test)
     if not teacher_mode :
         print(f1_score(Y_test,Y_pred, average="micro"))
+    TP.save_predictions_to_csv(Y_pred, "Y_pred_svc.csv")
     return Y_pred
 
 if __name__ == "__main__":

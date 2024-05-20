@@ -115,3 +115,19 @@ def get_X_Y(teacher_mode) :
     '''Si on est en teacher mode on génère la matrice X_test en utilisant le même modèle que pour la X_train'''
     X_test_matrix, X_test_model = TP.create_X_train_tfidf("Data/X_test.csv", tfidf=X_tfidf_model)
     return X_tfidf_matrix, X_test_matrix, Y, None
+
+
+def save_predictions_to_csv(Y_pred, csv_name):
+    """Sauvegarde les prédictions dans un fichier CSV."""
+    import pandas as pd
+    
+    # Créer un DataFrame avec les vraies valeurs et les prédictions
+    results_df = pd.DataFrame({
+        'Id': [i for i in range(len(Y_pred))],
+        'Predicted_prdtypecode': Y_pred
+    })
+    
+    # Sauvegarder le DataFrame dans un fichier CSV
+    results_df.to_csv("Predictions/"+csv_name, index=False)
+    
+    print(f"Prédictions sauvegardées dans {"Predictions/"+csv_name}")

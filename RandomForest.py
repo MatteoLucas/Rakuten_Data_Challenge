@@ -20,6 +20,7 @@ def rf_predict(teacher_mode):
     from joblib import load
     from sklearn.metrics import f1_score
     import sys
+    import TextProcessing as TP
     try :
         rf_model, X_train, X_test, Y_train, Y_test = load('Trained_Model/rf.model') 
     except FileNotFoundError :
@@ -30,6 +31,7 @@ def rf_predict(teacher_mode):
     Y_pred_rf = rf_model.predict(X_test)
     if not teacher_mode :
         print(f1_score(Y_test,Y_pred_rf, average="micro"))
+    TP.save_predictions_to_csv(Y_pred_rf, "Y_pred_rf.csv")
     return Y_pred_rf
 
 rf_predict()
