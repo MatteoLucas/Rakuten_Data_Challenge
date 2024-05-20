@@ -26,7 +26,7 @@ def normalize_accent(string):
 
 def raw_to_tokens(raw_string, spacy_nlp):
     # Write code for lower-casing
-  spacy_tokens = raw_string.lower()
+  spacy_tokens = str(raw_string).lower()
 
     # Write code to normalize the accents
   string_tokens = normalize_accent(spacy_tokens)
@@ -43,17 +43,19 @@ def raw_to_tokens(raw_string, spacy_nlp):
   return clean_string
 
 
-def docs_to_tfidf(docs_raw, tfidf) :
+def docs_to_tfidf(docs_raw) :
+  '''
+  Prends comme argument une liste de texte et renvoie la matrice TF-IDF associée
+  '''
   import spacy
   from sklearn.feature_extraction.text import TfidfVectorizer
+  from joblib import dump
   spacy_nlp = spacy.load("fr_core_news_sm")
   docs_clean = [raw_to_tokens(doc, spacy_nlp) for doc in docs_raw]
-  if tfidf == None :
-    tfidf = TfidfVectorizer()
-    X_tfidf = tfidf.fit_transform(docs_clean)
-  else : 
-    X_tfidf = tfidf.transform(docs_clean)
-  return X_tfidf, tfidf
+  tfidf = TfidfVectorizer()
+  X_tfidf = tfidf.fit_transform(docs_clean)
+  dump(tfidf, "Matrix&Model/tfidf.vector")
+  return X_tfidf
 
 
 def ouverture_fichier(file_name):
@@ -63,21 +65,23 @@ def ouverture_fichier(file_name):
   return data
 
 
-def create_X_train_tfidf(file, tfidf=None) :
-  import pickle
-  from scipy import sparse
+def create_X_tfidf() :
+  from joblib import dump
+  import pandas as pd
   #On ouvre le fichier
-  X_train = ouverture_fichier(file)
-  # Supprimer les colonnes innutiles
-  X_train = X_train.drop(columns=['description', 'productid', 'imageid'])
-
-  X_train_tfidf, tfidf= docs_to_tfidf(X_train['designation'], tfidf = tfidf)
+  X_train = ouverture_fichier("Data/X_train.csv")
+  X_test = ouverture_fichier("Data/X_test.csv")
+  longueur_train = len(X_train)
+  X = pd.concat([X_train['designation'], X_test['designation']], axis=0)
+  X_tfidf= docs_to_tfidf(X)
+  X_train_tfidf = X_tfidf[:longueur_train]
+  X_test_tfidf = X_tfidf[longueur_train:]
   print("Shape of the TF-IDF Matrix:")
-  print(X_train_tfidf.shape)
-  with open('Matrix&Model/X_train_tfidf_model.pkl', 'wb') as f:
-    pickle.dump(tfidf, f)
-  sparse.save_npz('Matrix&Model/X_train_tfidf_matrix.npz', X_train_tfidf)
-  return X_train_tfidf, tfidf
+  print("- X_train : ",X_train_tfidf.shape)
+  print("- X_test : ",X_test_tfidf.shape)
+  dump(X_train_tfidf, 'Matrix&Model/X_train_tfidf.matrix')
+  dump(X_test_tfidf, 'Matrix&Model/X_test_tfidf.matrix')
+  return X_train_tfidf, X_test_tfidf
 
 
 def get_X_Y(teacher_mode) :
@@ -91,33 +95,31 @@ def get_X_Y(teacher_mode) :
   X_test est pris dans X_test.csv et Y_test est None
   """
   import TextProcessing as TP
-  import pickle
+  from joblib import load
   from scipy import sparse
   from sklearn.model_selection import train_test_split
 
   #On essaye d'ouvrir la matrice tfidf de X_train si elle existe sinon, on la crée
   try : 
-      with open('Matrix&Model/X_train_tfidf_model.pkl', 'rb') as f:
-          X_tfidf_model = pickle.load(f)
-      X_tfidf_matrix = sparse.load_npz('Matrix&Model/X_train_tfidf_matrix.npz')
+    X_train_tfidf  = load('Matrix&Model/X_train_tfidf.matrix')
+    X_test_tfidf = load('Matrix&Model/X_test_tfidf.matrix')
   except FileNotFoundError :
-      X_tfidf_matrix, X_tfidf_model = TP.create_X_train_tfidf("Data/X_train.csv")
+    X_train_tfidf, X_test_tfidf = TP.create_X_tfidf()
 
   #On ouvre Y_train
-  Y = TP.ouverture_fichier("Data/Y_train.csv")["prdtypecode"]
+  Y_train = TP.ouverture_fichier("Data/Y_train.csv")["prdtypecode"]
 
   if not teacher_mode :
     '''Si on n'est pas en teacher mode, on sépare X_train et Y_train en un ensemble de train et un ensemble de test'''
     # Définir la proportion de l'ensemble de test
     test_portion = 1/5
     # Diviser les données en ensembles d'entraînement et de test
-    X_train, X_test, Y_train, Y_test = train_test_split(X_tfidf_matrix, Y, test_size=test_portion, shuffle=True)
+    X_train, X_test, Y_train, Y_test = train_test_split(X_train_tfidf, Y_train, test_size=test_portion, shuffle=True)
     return X_train, X_test, Y_train, Y_test
   
   else :
     '''Si on est en teacher mode on génère la matrice X_test en utilisant le même modèle que pour la X_train'''
-    X_test_matrix, X_test_model = TP.create_X_train_tfidf("Data/X_test.csv", tfidf=X_tfidf_model)
-    return X_tfidf_matrix, X_test_matrix, Y, None
+    return X_train_tfidf, X_test_tfidf, Y_train, None
 
 
 def save_predictions_to_csv(Y_pred, csv_name):
@@ -133,7 +135,7 @@ def save_predictions_to_csv(Y_pred, csv_name):
     # Sauvegarder le DataFrame dans un fichier CSV
     results_df.to_csv("Predictions/"+csv_name, index=False)
     
-    print(f"Prédictions sauvegardées dans {"Predictions/"+csv_name}")
+    print("Prédictions sauvegardées dans Predictions/"+csv_name)
 
 
 def split_file(file_base, parts_directory = "Trained_Model/", file_extension = ".model", chunk_size=12 * 1024 * 1024):
