@@ -13,3 +13,10 @@ def rf_train(teacher_mode) :
     # Sauvegarde du modèle
     TP.save_model([rf_model, X_train, X_test, Y_train, Y_test], 'rf', teacher_mode) 
     print("Modèle entraîné et sauvegardé avec succès.")
+
+if __name__=="__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("argument", type=bool)
+    args = parser.parse_args()
+    rf_train(args.argument)

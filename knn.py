@@ -22,4 +22,8 @@ def knn_train(teacher_mode):
     print("Modèle entraîné et sauvegardé avec succès.")
 
 if __name__=="__main__":
-    knn_train(True)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("argument", type=bool)
+    args = parser.parse_args()
+    knn_train(args.argument)
