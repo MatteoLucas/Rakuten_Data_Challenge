@@ -9,6 +9,7 @@ def majority_vote(models, teacher_mode):
     import numpy as np
     from sklearn.metrics import f1_score
     import TextProcessing as TP
+    from predict import predict
 
     # Empiler les prédictions en une seule matrice
     Y_pred, Y_test, X_train = predict(models[0], teacher_mode)
