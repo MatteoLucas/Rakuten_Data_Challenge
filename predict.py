@@ -36,4 +36,4 @@ if __name__=="__main__":
     parser.add_argument("model", type=str)
     parser.add_argument("mode", type=str)
     args = parser.parse_args()
-    predict(args.model,args.mode)
+    predict(args.model,args.mode.lower() == 'true')
