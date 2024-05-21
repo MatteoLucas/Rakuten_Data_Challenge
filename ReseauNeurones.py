@@ -50,4 +50,8 @@ def rn_train(teacher_mode):
 
 
 if __name__=="__main__":
-    rn_train(False)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("argument", type=bool)
+    args = parser.parse_args()
+    rn_train(args.argument)

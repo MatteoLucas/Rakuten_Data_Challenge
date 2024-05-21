@@ -23,8 +23,8 @@ Pour entrainer un modèle il suffit de lancer dans le repertoire du projet :
 python ./model.py teacher_mode
 ```
 En remplaçant : 
-    - `model` par le nom du modèle à entrainer : `SVC`, `Random_Forest`, `knn`, `ReseauNeurones`
-    - `teacher_mode` par `True` ou `False` : en mode `True` le modèle sera entrainé sur la totalité de `X_train.csv` alors qu'en mode `False`, une partie de `X_train.csv` sera conservée pour les tests.
+- `model` par le nom du modèle à entrainer : `SVC`, `Random_Forest`, `knn`, `ReseauNeurones`
+- `teacher_mode` par `True` ou `False` : en mode `True` le modèle sera entrainé sur la totalité de `X_train.csv` alors qu'en mode `False`, une partie de `X_train.csv` sera conservée pour les tests.
 
 Par exemple :
 ```bash
@@ -37,8 +37,8 @@ Pour effectuer une prediction à partir d'un modèle entrainé, il suffit de lan
 python ./predict.py model teacher_mode
 ```
 En remplaçant : 
-    - `model` par le nom du modèle à partir duquel faire la prediction : `svc`, `rf`, `knn`, `rn`
-    - `teacher_mode` par `True` ou `False` : en mode `True` le modèle de prédiction sera celui entrainé sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_model.csv` sera créé alors qu'en mode `False`, le modèle de prédiction sera celui entrainé sur une partie de `X_train.csv` et le programme renvera uniquement le score f1.
+- `model` par le nom du modèle à partir duquel faire la prediction : `svc`, `rf`, `knn`, `rn`
+- `teacher_mode` par `True` ou `False` : en mode `True` le modèle de prédiction sera celui entrainé sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_model.csv` sera créé alors qu'en mode `False`, le modèle de prédiction sera celui entrainé sur une partie de `X_train.csv` et le programme renvera uniquement le score f1.
 
 ## Auteurs
 - Mattéo Lucas
