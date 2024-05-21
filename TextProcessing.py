@@ -127,12 +127,12 @@ def save_predictions_to_csv(Y_pred, csv_name, X_train):
     
     # Créer un DataFrame avec les vraies valeurs et les prédictions
     results_df = pd.DataFrame({
-        'Id': [i for i in range(X_train.shape[0],X_train.shape[0]+len(Y_pred))],
-        'Predicted_prdtypecode': Y_pred
+        '': [i for i in range(X_train.shape[0],X_train.shape[0]+len(Y_pred))],
+        'prdtypecode': Y_pred
     })
     
     # Sauvegarder le DataFrame dans un fichier CSV
-    results_df.to_csv("Predictions/"+csv_name, index=False)
+    results_df.to_csv("Predictions_ForTeacher/"+csv_name, index=False)
     
     print("Prédictions sauvegardées dans Predictions/"+csv_name)
 

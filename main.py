@@ -26,7 +26,8 @@ def predict(model_name, teacher_mode):
 
     if not teacher_mode :
         print("F1 score macro : ",f1_score(Y_test,Y_pred, average="macro"))
-    TP.save_predictions_to_csv(Y_pred, "Y_pred_"+model_name+".csv", X_train)
+    else :
+        TP.save_predictions_to_csv(Y_pred, "Y_pred_"+model_name+".csv", X_train)
     return Y_pred
 
 predict('rn', True)
