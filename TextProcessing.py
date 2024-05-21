@@ -134,7 +134,7 @@ def save_predictions_to_csv(Y_pred, csv_name, X_train):
     # Sauvegarder le DataFrame dans un fichier CSV
     results_df.to_csv("Predictions_ForTeacher/"+csv_name, index=False)
     
-    print("Prédictions sauvegardées dans Predictions/"+csv_name)
+    print("Prédictions sauvegardées dans Predictions_ForTeacher/"+csv_name)
 
 
 def split_file(file_base, parts_directory = "Trained_Model/", file_extension = ".model", chunk_size=12 * 1024 * 1024):
