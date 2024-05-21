@@ -201,7 +201,7 @@ def load_model(file_base, teacher_mode,  parts_directory = "Trained_Model/", fil
   '''
   from joblib import load
   import os
-  if teacher_mode :
+  if teacher_mode and file_base != "rn":
     parts_directory = "Trained_Model_ForTeacher/"
   if not os.path.exists(parts_directory+file_base+"_part0"+file_extension) :
     raise FileNotFoundError("Entrainez d'abord le modèle avec la fonction "+file_base+"_train()")

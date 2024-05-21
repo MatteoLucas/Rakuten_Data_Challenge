@@ -21,12 +21,12 @@ def predict(model_name, teacher_mode):
     if Y_pred.ndim > 1 and Y_pred.shape[1] > 1:
         Y_pred = np.argmax(Y_pred, axis=1)
     # Convertir Y_test en labels si nécessaire
-    if Y_test.ndim > 1 and Y_test.shape[1] > 1:
+    if not teacher_mode and Y_test.ndim > 1 and Y_test.shape[1] > 1:
         Y_test = np.argmax(Y_test, axis=1)
 
     if not teacher_mode :
-        print("F1 score macro : ",f1_score(Y_test,Y_pred, average="micro"))
+        print("F1 score macro : ",f1_score(Y_test,Y_pred, average="macro"))
     TP.save_predictions_to_csv(Y_pred, "Y_pred_"+model_name+".csv", X_train)
     return Y_pred
 
-predict('rn', False)
+predict('rn', True)

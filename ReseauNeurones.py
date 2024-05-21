@@ -22,7 +22,7 @@ def rn_train(teacher_mode):
     # Ajout de la première couche dense
     model.add(Dense(256, input_shape=(X_train.shape[1],), activation='relu'))
     model.add(Dropout(0.3))
-    
+ 
     # Ajout d'une deuxième couche dense
     model.add(Dense(128, activation='relu'))
     model.add(Dropout(0.3))
@@ -37,7 +37,7 @@ def rn_train(teacher_mode):
     # Compiler le modèle avec des hyperparamètres ajustables
     model.compile(loss='categorical_crossentropy',  # Utiliser 'categorical_crossentropy' pour une classification multi-classes
                   optimizer=Adam(learning_rate=0.0005),
-                  metrics=['accuracy'])
+                  metrics=['f1_score'])
 
     # Entraîner le modèle avec des hyperparamètres ajustables
     model.fit(X_train, Y_train, epochs=10, batch_size=64, validation_data=(X_test, Y_test))
