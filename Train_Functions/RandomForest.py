@@ -1,5 +1,10 @@
 def rf_train(teacher_mode) :
     """Entraine le modèle Random Forest et le sauvegarde"""
+    import sys
+    import os
+    # Ajouter le chemin du dossier parent
+    parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+    sys.path.append(parent_dir)
     import TextProcessing as TP
     from sklearn.ensemble import RandomForestClassifier
 

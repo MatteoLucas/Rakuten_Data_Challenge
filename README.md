@@ -20,7 +20,7 @@ Le code permet de faire différentes choses :
 ### Entrainement d'un modèle
 Pour entrainer un modèle il suffit de lancer dans le repertoire du projet :
 ```bash
-python ./model.py teacher_mode
+python Train_Functions/model.py teacher_mode
 ```
 En remplaçant : 
 - `model` par le nom du modèle à entrainer : `SVC`, `Random_Forest`, `knn`, `ReseauNeurones`
@@ -28,8 +28,8 @@ En remplaçant :
 
 Par exemple :
 ```bash
-python ./knn.py False
-python ./SVC.py True
+python Train_Functions/knn.py False
+python Train_Functions/SVC.py True
 ```
 ### Prédiction
 Pour effectuer une prediction à partir d'un modèle entrainé, il suffit de lancer dans le repertoire du projet :

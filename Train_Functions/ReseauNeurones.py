@@ -4,6 +4,11 @@ def rn_train(teacher_mode):
     from tensorflow.keras.layers import Dense, Dropout
     from tensorflow.keras.optimizers import Adam
     from tensorflow.keras.utils import to_categorical
+    import sys
+    import os
+    # Ajouter le chemin du dossier parent
+    parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+    sys.path.append(parent_dir)
     import TextProcessing as TP
 
     # Récupérer les données d'entraînement et de test
