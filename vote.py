@@ -36,4 +36,11 @@ def majority_vote(models, teacher_mode):
 
     return Y_final_pred
 
-majority_vote(['svc','rn','knn'], False)
+if __name__=="__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("list", nargs='+', type=str, help="Une liste de chaînes de caractères à passer à la fonction")
+    args = parser.parse_args()
+    list_model= args.list[:-1]
+    teacher_mode = args.list[-1].lower() == 'true'
+    majority_vote(list_model, teacher_mode)

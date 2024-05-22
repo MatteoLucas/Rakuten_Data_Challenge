@@ -39,6 +39,23 @@ python ./predict.py model teacher_mode
 En remplaçant : 
 - `model` par le nom du modèle à partir duquel faire la prediction : `svm`, `rf`, `knn`, `rn`
 - `teacher_mode` par `True` ou `False` : en mode `True` le modèle de prédiction sera celui entrainé sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_model.csv` sera créé alors qu'en mode `False`, le modèle de prédiction sera celui entrainé sur une partie de `X_train.csv` et le programme renvera uniquement le score f1.
+Par exemple :
+```bash
+python ./predict.py rf True
+```
+
+### Vote majoritaire
+Il est aussi possible d'effectuer un vote majoritaire entre plusieurs modèle entrainé. Pour ce faire, , il suffit de lancer dans le repertoire du projet : 
+```bash
+python vote.py model1 model2 model3 teacher_mode
+```
+En remplaçant : 
+- `model1`, `model2`, `model3` par le nom des modèles à partir desquels faire le vote : `svm`, `rf`, `knn`, `rn`. Il faut mettre au minimum 2 modèles.
+- `teacher_mode` par `True` ou `False` : en mode `True` les modèles de prédiction seront ceux entrainés sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_vote.csv` sera créé alors qu'en mode `False`, les modèles de prédiction seront ceux entrainés sur une partie de `X_train.csv` et le programme renvera uniquement le score f1.
+Par exemple :
+```bash
+python vote.py svm rn rf knn True
+```
 
 ## Résultats
 Le tableau ci-dessous regroupe les scores obtenus par nos différents modèles lors déla soumissions des résultats sur le site du challenge.
