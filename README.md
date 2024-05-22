@@ -1,7 +1,7 @@
 # Initiation aux data sciences - Rakuten Data Challenge 
 
 ## Description
-Ce projet est une proposition de solution au Rakuten Data Challenge.
+Ce projet est une proposition de solution au Rakuten Data Challenge.  
 Le descriptif du challenge est disponible ici : https://challengedata.ens.fr/professors/challenges/35/
 L'objectif est de mettre en oeuvre différentes méthodes de Machine Learning et Deep Learning pour résoudre le problème
 
@@ -46,8 +46,8 @@ Le tableau ci-dessous regroupe les scores obtenus par nos différents modèles l
 
 | Modèle | Abréviation | Score lors de la soumission |
 |-----------|-----------|-----------|
-| Support Vector Machine  | svm  | 0,8150  |
-| Réseau de neurones simple  | rn  | 0,7586  |
+| Support Vector Machine  | svm  | 0,8150772450094129  |
+| Réseau de neurones simple  | rn  | 0,7585749852167508  |
 
 
 ## Auteurs
