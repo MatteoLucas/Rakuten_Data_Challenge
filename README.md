@@ -1,7 +1,7 @@
 # Initiation aux data sciences - Rakuten Data Challenge 
 
 ## Description
-Ce projet est une proposition de solution au Rakuten Data Challenge. Le descriptif du challenge est disponible ici : https://challengedata.ens.fr/professors/challenges/35/  
+Ce projet est une proposition de solution au Rakuten Data Challenge. Le descriptif du challenge est disponible ici : https://challengedata.ens.fr/challenges/35/  
 L'objectif est de mettre en oeuvre différentes méthodes de Machine Learning et Deep Learning pour résoudre le problème
 
 ## Table des Matières
