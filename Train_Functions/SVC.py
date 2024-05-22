@@ -13,7 +13,7 @@ def svc_train(teacher_mode):
 
     # Définition du modèle SVC avec les meilleurs paramètres trouvés
     best_params = {'C': 100, 'gamma': 1, 'kernel': 'rbf'}
-    svc = SVC(C=best_params['C'], gamma=best_params['gamma'], kernel=best_params['kernel'])
+    svc = SVC(C=best_params['C'], gamma=best_params['gamma'], kernel=best_params['kernel'], verbose=10)
 
     # Entraîner le modèle avec les données d'entraînement
     svc.fit(X_train, Y_train)
