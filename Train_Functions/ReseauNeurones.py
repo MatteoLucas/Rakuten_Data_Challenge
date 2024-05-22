@@ -11,6 +11,11 @@ def rn_train(teacher_mode):
     sys.path.append(parent_dir)
     import TextProcessing as TP
 
+    if teacher_mode :
+        print("Ce modèle ne peut-etre entrainé qu'en teacher_mode=False car il a besoin de Y_test pour la loss function.\nCependant, une prédiction sera possible sur tout le jeu de donné")
+        teacher_mode = False
+        print("Entrainement en teacher_mode=False")
+
     # Récupérer les données d'entraînement et de test
     X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode)
 
