@@ -65,7 +65,7 @@ Le tableau ci-dessous regroupe les scores obtenus par nos différents modèles l
 | Modèle | Abréviation | Score lors de la soumission |
 |-----------|-----------|-----------|
 | Support Vector Machine  | svm  | 0,8150772450094129  |
-| Random Forest | rm | 0,7954135737911665 |
+| Random Forest | rf | 0,7954135737911665 |
 | Réseau de neurones simple  | rn  | 0,7585749852167508  |
 | K plus proches voisins | knn | 0,7009108287785425|
 
