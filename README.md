@@ -23,7 +23,7 @@ Pour entrainer un modèle il suffit de lancer dans le repertoire du projet :
 python Train_Functions/model.py teacher_mode
 ```
 En remplaçant : 
-- `model` par le nom du modèle à entrainer : `svm`, `rf`, `knn`, `rn`
+- `model` par le nom du modèle à entrainer : `svm`, `rf`, `knn`, `rn`,`gb`.
 - `teacher_mode` par `True` ou `False` : en mode `True` le modèle sera entrainé sur la totalité de `X_train.csv` alors qu'en mode `False`, une partie de `X_train.csv` sera conservée pour les tests.
 
 Par exemple :
@@ -37,7 +37,7 @@ Pour effectuer une prediction à partir d'un modèle entrainé, il suffit de lan
 python ./predict.py model teacher_mode
 ```
 En remplaçant : 
-- `model` par le nom du modèle à partir duquel faire la prediction : `svm`, `rf`, `knn`, `rn`
+- `model` par le nom du modèle à partir duquel faire la prediction : `svm`, `rf`, `knn`, `rn`, `gb`
 - `teacher_mode` par `True` ou `False` : en mode `True` le modèle de prédiction sera celui entrainé sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_model.csv` sera créé alors qu'en mode `False`, le modèle de prédiction sera celui entrainé sur une partie de `X_train.csv` et le programme renvera uniquement le score f1.
 
 Par exemple :
@@ -51,7 +51,7 @@ Il est aussi possible d'effectuer un vote majoritaire entre plusieurs modèle en
 python ./vote.py model1 model2 model3 teacher_mode
 ```
 En remplaçant : 
-- `model1`, `model2`, `model3` par le nom des modèles à partir desquels faire le vote : `svm`, `rf`, `knn`, `rn`. Il faut mettre au minimum 2 modèles.
+- `model1`, `model2`, `model3` par le nom des modèles à partir desquels faire le vote : `svm`, `rf`, `knn`, `rn`, `gb`. Il faut mettre au minimum 2 modèles.
 - `teacher_mode` par `True` ou `False` : en mode `True` les modèles de prédiction seront ceux entrainés sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_vote.csv` sera créé alors qu'en mode `False`, les modèles de prédiction seront ceux entrainés sur une partie de `X_train.csv` et le programme renvera uniquement le score f1.
 
 Par exemple :
@@ -65,7 +65,9 @@ Le tableau ci-dessous regroupe les scores obtenus par nos différents modèles l
 | Modèle | Abréviation | Score lors de la soumission |
 |-----------|-----------|-----------|
 | Support Vector Machine  | svm  | 0,8150772450094129  |
+| Random Forest | rm | 0,7954135737911665 |
 | Réseau de neurones simple  | rn  | 0,7585749852167508  |
+| K plus proches voisins | knn | 0,7009108287785425|
 
 
 ## Auteurs
