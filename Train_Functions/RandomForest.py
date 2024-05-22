@@ -12,7 +12,7 @@ def rf_train(teacher_mode) :
 
     # Définition du modèle Random Forest avec les meilleurs paramètres trouvés
     best_param = {'n_estimators': 600}
-    rf_model = RandomForestClassifier(n_estimators=best_param['n_estimators'])
+    rf_model = RandomForestClassifier(n_estimators=best_param['n_estimators'], verbose=10, n_jobs=-1)
     rf_model.fit(X_train, Y_train)
     
     # Sauvegarde du modèle
