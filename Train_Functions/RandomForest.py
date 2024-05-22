@@ -11,7 +11,7 @@ def rf_train(teacher_mode) :
     X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode)
 
     # Définition du modèle Random Forest avec les meilleurs paramètres trouvés
-    best_param = {'n_estimators': 800}
+    best_param = {'n_estimators': 600}
     rf_model = RandomForestClassifier(n_estimators=best_param['n_estimators'])
     rf_model.fit(X_train, Y_train)
     
