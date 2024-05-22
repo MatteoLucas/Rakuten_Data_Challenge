@@ -19,7 +19,7 @@ def svc_train(teacher_mode):
     svc.fit(X_train, Y_train)
 
     # Sauvegarder le modèle entraîné
-    TP.save_model([svc, X_train, X_test, Y_train, Y_test], 'svc', teacher_mode) 
+    TP.save_model([svc, X_train, X_test, Y_train, Y_test], 'svm', teacher_mode) 
 
     print("Modèle entraîné et sauvegardé avec succès.")
 
