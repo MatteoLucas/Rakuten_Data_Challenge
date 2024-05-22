@@ -1,26 +1,25 @@
-#Entraine le modèle bert et le sauvegarde
-def bert_train(teacher_mode):
-    
-    import os
-    import pandas as pd
-    import torch
-    from sklearn.metrics import classification_report, accuracy_score, f1_score
-    from sklearn.model_selection import train_test_split
-    from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments
-    from transformers import DataCollatorWithPadding
-    from torch.utils.data import Dataset
-    import TextProcessing as TP
+import os
+import pandas as pd
+import torch
+from sklearn.metrics import f1_score
+from sklearn.model_selection import train_test_split
+from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments
+from transformers import DataCollatorWithPadding
+from torch.utils.data import Dataset
+import TextProcessing as TP
 
+def set_seed(seed):
+    torch.manual_seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+
+
+def bert_train(teacher_mode):
     #Définir manuellement le seed pour la reproductibilité
-    def set_seed(seed):
-        torch.manual_seed(seed)
-        os.environ['PYTHONHASHSEED'] = str(seed)
-    
     set_seed(42)
 
     # Charger les fichiers CSV et enlever la première ligne
-    X_train = pd.read_csv('X_train.csv', skiprows=1, usecols=[0, 1, 2])
-    Y_train = pd.read_csv('Y_train.csv', skiprows=1)
+    X_train = pd.read_csv('Data/X_train.csv', skiprows=1, usecols=[0, 1, 2])
+    Y_train = pd.read_csv('Data/Y_train.csv', skiprows=1)
 
     # Renommer les colonnes pour une manipulation plus facile
     X_train.columns = ['num_produit', 'info1', 'info2']
@@ -95,14 +94,14 @@ def bert_train(teacher_mode):
 
     # Définir les arguments d'entraînement
     training_args = TrainingArguments(
-        output_dir='./results',
+        output_dir='bert/results',
         evaluation_strategy='epoch',
         learning_rate=2e-5,
         per_device_train_batch_size=8,  # Augmenter la taille du batch si la mémoire le permet
         per_device_eval_batch_size=8,
         num_train_epochs=5,  # Ajuster le nombre d'époques
         weight_decay=0.01,
-        logging_dir='./logs',
+        logging_dir='bert/logs',
         logging_steps=10,
         save_steps=10,
         fp16=True  # Utiliser l'entraînement en précision mixte pour accélérer l'entraînement
@@ -126,3 +125,6 @@ def bert_train(teacher_mode):
     TP.save_model([bert, X_train, None, Y_train, None], 'bert', teacher_mode) 
 
     print("Modèle entraîné et sauvegardé avec succès.")
+
+if __name__ == "__main__":
+    bert_train(False)
