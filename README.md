@@ -8,6 +8,7 @@ L'objectif est de mettre en oeuvre différentes méthodes de Machine Learning et
 ## Table des Matières
 - [Installation](#installation)
 - [Usage](#usage)
+- [Résultats](#résultats)
 - [Auteurs](#auteurs)
 
 ## Installation
@@ -39,6 +40,15 @@ python ./predict.py model teacher_mode
 En remplaçant : 
 - `model` par le nom du modèle à partir duquel faire la prediction : `svm`, `rf`, `knn`, `rn`
 - `teacher_mode` par `True` ou `False` : en mode `True` le modèle de prédiction sera celui entrainé sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_model.csv` sera créé alors qu'en mode `False`, le modèle de prédiction sera celui entrainé sur une partie de `X_train.csv` et le programme renvera uniquement le score f1.
+
+## Résultats
+Le tableau ci-dessous regroupe les scores obtenus par nos différents modèles lors déla soumissions des résultats sur le site du challenge.
+
+| Modèle | Abréviation | Score lors de la soumission |
+|-----------|-----------|-----------|
+| Support Vector Machine  | svm  | 0,8150  |
+| Réseau de neurones simple  | rn  | 0,7586  |
+
 
 ## Auteurs
 - Mattéo Lucas
