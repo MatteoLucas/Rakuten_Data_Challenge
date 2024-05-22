@@ -48,7 +48,7 @@ python ./predict.py rf True
 ### Vote majoritaire
 Il est aussi possible d'effectuer un vote majoritaire entre plusieurs modèle entrainé. Pour ce faire, , il suffit de lancer dans le repertoire du projet : 
 ```bash
-python vote.py model1 model2 model3 teacher_mode
+python ./vote.py model1 model2 model3 teacher_mode
 ```
 En remplaçant : 
 - `model1`, `model2`, `model3` par le nom des modèles à partir desquels faire le vote : `svm`, `rf`, `knn`, `rn`. Il faut mettre au minimum 2 modèles.
@@ -56,7 +56,7 @@ En remplaçant :
 
 Par exemple :
 ```bash
-python vote.py svm rn rf knn True
+python ./vote.py svm rn rf knn True
 ```
 
 ## Résultats
