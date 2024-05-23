@@ -21,7 +21,9 @@ def predict(model_name, teacher_mode):
         else :
             svd = False
         X_train, X_test, Y_train, Y_test = TP.get_X_Y(True, svd) #Pour etre sur que la prédiction sera sur le bon X_test
-
+    
+    print("Predicting ...")
+    
     # Prédiction et évaluation
     Y_pred = model.predict(X_test)
 

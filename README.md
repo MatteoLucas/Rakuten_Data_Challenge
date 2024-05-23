@@ -43,7 +43,7 @@ Par exemple :
 ```bash
 python Train_Functions/svd.py --n_components 60000
 ```
-Maintenant pour entrainer un modèle avec une réduction de la dimension il suffit de rajouter `--svd True` à la fin de la commande.  
+Maintenant, pour entrainer un modèle avec une réduction de la dimension il suffit de rajouter `--svd True` à la fin de la commande.  
 Par exemple :
 ```bash
 python Train_Functions/svm.py True --svd True
@@ -85,6 +85,7 @@ Le tableau ci-dessous regroupe les scores obtenus par nos différents modèles l
 | Support Vector Machine  | svm  | 0,8150772450094129  |
 | Random Forest | rf | 0,7954135737911665 |
 | Réseau de neurones simple  | rn  | 0,7585749852167508  |
+| SVM avec réduction de la dimension  | svd_svm  | 0,7463318764800209  |
 | K plus proches voisins | knn | 0,7009108287785425|
 
 
