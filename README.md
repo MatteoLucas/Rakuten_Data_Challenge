@@ -31,6 +31,24 @@ Par exemple :
 python Train_Functions/knn.py False
 python Train_Functions/svm.py True
 ```
+#### Entrainement avec réduction de la dimension
+Il est possible d'entrainer un modèle avec une réduction de la dimension par la méthode SVD.  
+Pour ce faire il faut tout d'abord entrainer le modèle de réduction de la dimension :
+```bash
+python Train_Functions/svd.py --n_components n
+```
+Où `n_components` est un argument facultatif qui permet de définir nouvelle la dimension. La valeur par défaut est `n_components=30000`  
+
+Par exemple :
+```bash
+python Train_Functions/svd.py --n_components 60000
+```
+Maintenant pour entrainer un modèle avec une réduction de la dimension il suffit de rajouter `--svd True` à la fin de la commande.  
+Par exemple :
+```bash
+python Train_Functions/svm.py True --svd True
+```
+Dans cet exemple le modèle créé sera nommé `svd_svm`, c'est le nom qu'il faudra utiliser pour la prédiction
 ### Prédiction
 Pour effectuer une prediction à partir d'un modèle entrainé, il suffit de lancer dans le repertoire du projet :
 ```bash
