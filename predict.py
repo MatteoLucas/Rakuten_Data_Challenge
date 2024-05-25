@@ -8,12 +8,22 @@ def predict(model_name, teacher_mode):
     from sklearn.metrics import f1_score
     import TextProcessing as TP
     import numpy as np
+    
+    if model_name == "svd":
+        raise TypeError("svd n'est pas un modèle pour faire des prédictions, il sert à faire une réduction de la dimension lors de l'entrainement d'autres modèles")
+
 
     model, X_train, X_test, Y_train, Y_test = TP.load_model(model_name, teacher_mode) 
 
     if teacher_mode :
-        X_train, X_test, Y_train, Y_test = TP.get_X_Y(True) #Pour etre sur que la prédiction sera sur le bon X_test
-
+        if len(model_name)>3 and model_name[:3] == "svd":
+            svd = True
+        else :
+            svd = False
+        X_train, X_test, Y_train, Y_test = TP.get_X_Y(True, svd) #Pour etre sur que la prédiction sera sur le bon X_test
+    
+    print("Predicting ...")
+    
     # Prédiction et évaluation
     Y_pred = model.predict(X_test)
 
@@ -34,6 +44,6 @@ if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("model", type=str)
-    parser.add_argument("mode", type=str)
+    parser.add_argument("teacher_mode", type=str)
     args = parser.parse_args()
-    predict(args.model,args.mode.lower() == 'true')
+    predict(args.model,args.teacher_mode.lower() == 'true')

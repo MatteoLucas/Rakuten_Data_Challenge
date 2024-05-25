@@ -84,7 +84,7 @@ def create_X_tfidf() :
   return X_train_tfidf, X_test_tfidf
 
 
-def get_X_Y(teacher_mode) :
+def get_X_Y(teacher_mode, SVD=False) :
   """
   Cette fonction renvoie X_train, X_test, Y_train, Y_test
 
@@ -114,11 +114,27 @@ def get_X_Y(teacher_mode) :
     test_portion = 1/5
     # Diviser les données en ensembles d'entraînement et de test
     X_train, X_test, Y_train, Y_test = train_test_split(X_train_tfidf, Y_train, test_size=test_portion, shuffle=True)
-    return X_train, X_test, Y_train, Y_test
+    if not SVD :
+      return X_train, X_test, Y_train, Y_test
+    else : 
+      import sys
+      import os
+      # Ajouter le répertoire enfant à sys.path
+      sys.path.append(os.path.join(os.path.dirname(__file__), 'Train_Functions'))
+      import svd
+      return svd.svd_fit(X_train), svd.svd_fit(X_test), Y_train, Y_test
   
   else :
     '''Si on est en teacher mode on génère la matrice X_test en utilisant le même modèle que pour la X_train'''
-    return X_train_tfidf, X_test_tfidf, Y_train, None
+    if not SVD :
+      return X_train_tfidf, X_test_tfidf, Y_train, None
+    else : 
+      import sys
+      import os
+      # Ajouter le répertoire enfant à sys.path
+      sys.path.append(os.path.join(os.path.dirname(__file__), 'Train_Functions'))
+      import svd
+      return svd.svd_fit(X_train_tfidf), svd.svd_fit(X_test_tfidf), Y_train, None
 
 
 def save_predictions_to_csv(Y_pred, csv_name, X_train):

@@ -1,4 +1,4 @@
-def gb_train(teacher_mode) :
+def gb_train(teacher_mode, svd=False) :
     """Entraine le modèle Gradient Boosting et le sauvegarde"""
     import sys
     import os
@@ -8,7 +8,7 @@ def gb_train(teacher_mode) :
     import TextProcessing as TP
     from sklearn.ensemble import GradientBoostingClassifier
     # Récupérer les données d'entraînement et de test
-    X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode)
+    X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode, svd)
 
     # Définition du modèle gradient boosting avec les meilleurs paramètres trouvés
     best_param = {'learning_rate': 0.1,'max_depth': 10,'n_estimators': 250}
@@ -18,7 +18,10 @@ def gb_train(teacher_mode) :
     gb.fit(X_train, Y_train)
 
     # Sauvegarder le modèle entraîné
-    TP.save_model([gb, X_train, X_test, Y_train, Y_test], 'gb', teacher_mode) 
+    if not svd :
+        TP.save_model([gb, X_train, X_test, Y_train, Y_test], 'gb', teacher_mode)
+    else :
+        TP.save_model([gb, X_train, X_test, Y_train, Y_test], 'gp_svm', teacher_mode)
 
     print("Modèle entraîné et sauvegardé avec succès.")
 
@@ -26,6 +29,7 @@ def gb_train(teacher_mode) :
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("argument", type=str)
+    parser.add_argument("teacher_mode", type=str)
+    parser.add_argument("--svd", type=str, default="False")
     args = parser.parse_args()
-    gb_train(args.argument.lower() == 'true')
+    gb_train(args.teacher_mode.lower() == 'true', args.svd.lower() == 'true')

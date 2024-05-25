@@ -1,4 +1,4 @@
-def rf_train(teacher_mode) :
+def rf_train(teacher_mode, svd=False) :
     """Entraine le modèle Random Forest et le sauvegarde"""
     import sys
     import os
@@ -8,20 +8,25 @@ def rf_train(teacher_mode) :
     import TextProcessing as TP
     from sklearn.ensemble import RandomForestClassifier
 
-    X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode)
+    X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode, svd)
 
     # Définition du modèle Random Forest avec les meilleurs paramètres trouvés
     best_param = {'n_estimators': 600}
     rf_model = RandomForestClassifier(n_estimators=best_param['n_estimators'], verbose=10, n_jobs=-1)
     rf_model.fit(X_train, Y_train)
     
-    # Sauvegarde du modèle
-    TP.save_model([rf_model, X_train, X_test, Y_train, Y_test], 'rf', teacher_mode) 
+    # Sauvegarder le modèle entraîné
+    if not svd :
+        TP.save_model([rf_model, X_train, X_test, Y_train, Y_test], 'rf', teacher_mode)
+    else :
+        TP.save_model([rf_model, X_train, X_test, Y_train, Y_test], 'svd_rf', teacher_mode)
+
     print("Modèle entraîné et sauvegardé avec succès.")
 
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("argument", type=str)
+    parser.add_argument("teacher_mode", type=str)
+    parser.add_argument("--svd", type=str, default="False")
     args = parser.parse_args()
-    rf_train(args.argument.lower() == 'true')
+    rf_train(args.teacher_mode.lower() == 'true', args.svd.lower() == 'true')

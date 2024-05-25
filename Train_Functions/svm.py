@@ -1,4 +1,4 @@
-def svc_train(teacher_mode):
+def svc_train(teacher_mode, svd=False):
     """Entraine le modèle SVC et le sauvegarde"""
     import sys
     import os
@@ -9,7 +9,7 @@ def svc_train(teacher_mode):
     import TextProcessing as TP
 
     # Récupérer les données d'entraînement et de test
-    X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode)
+    X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode, svd)
 
     # Définition du modèle SVC avec les meilleurs paramètres trouvés
     best_params = {'C': 100, 'gamma': 1, 'kernel': 'rbf'}
@@ -19,13 +19,17 @@ def svc_train(teacher_mode):
     svc.fit(X_train, Y_train)
 
     # Sauvegarder le modèle entraîné
-    TP.save_model([svc, X_train, X_test, Y_train, Y_test], 'svm', teacher_mode) 
+    if not svd :
+        TP.save_model([svc, X_train, X_test, Y_train, Y_test], 'svm', teacher_mode)
+    else :
+        TP.save_model([svc, X_train, X_test, Y_train, Y_test], 'svd_svm', teacher_mode)
 
     print("Modèle entraîné et sauvegardé avec succès.")
 
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("argument", type=str)
+    parser.add_argument("teacher_mode", type=str)
+    parser.add_argument("--svd", type=str, default="False")
     args = parser.parse_args()
-    svc_train(args.argument.lower() == 'true')
+    svc_train(args.teacher_mode.lower() == 'true', args.svd.lower() == 'true')

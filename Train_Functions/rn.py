@@ -1,4 +1,4 @@
-def rn_train(teacher_mode):
+def rn_train(teacher_mode, svd=False):
     """Entraine un réseau de neurones pour une classification multi-classes et le sauvegarde"""
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.layers import Dense, Dropout
@@ -17,7 +17,7 @@ def rn_train(teacher_mode):
         print("Entrainement en teacher_mode=False")
 
     # Récupérer les données d'entraînement et de test
-    X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode)
+    X_train, X_test, Y_train, Y_test = TP.get_X_Y(teacher_mode, svd)
 
     # Assurez-vous que Y_train et Y_test sont one-hot encoded
     Y_train = to_categorical(Y_train)
@@ -53,7 +53,10 @@ def rn_train(teacher_mode):
     model.fit(X_train, Y_train, epochs=10, batch_size=64, validation_data=(X_test, Y_test))
 
     # Sauvegarder le modèle entraîné
-    TP.save_model([model, X_train, X_test, Y_train, Y_test], 'rn', teacher_mode)
+    if not svd :
+        TP.save_model([model, X_train, X_test, Y_train, Y_test], 'rn', teacher_mode)
+    else :
+        TP.save_model([model, X_train, X_test, Y_train, Y_test], 'svd_rn', teacher_mode)
 
     print("Modèle entraîné et sauvegardé avec succès.")
 
@@ -62,6 +65,7 @@ def rn_train(teacher_mode):
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("argument", type=str)
+    parser.add_argument("teacher_mode", type=str)
+    parser.add_argument("--svd", type=str, default="False")
     args = parser.parse_args()
-    rn_train(args.argument.lower() == 'true')
+    rn_train(args.teacher_mode.lower() == 'true', args.svd.lower() == 'true')
