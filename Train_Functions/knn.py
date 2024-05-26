@@ -1,4 +1,4 @@
-def knn_train(teacher_mode, svd=False):
+def knn_train(teacher_mode=True, svd=False):
     """Entraine le modèle KNN avec validation croisée et le sauvegarde"""
     from sklearn.neighbors import KNeighborsClassifier
     import sys
@@ -31,7 +31,8 @@ def knn_train(teacher_mode, svd=False):
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("teacher_mode", type=str)
+    parser.add_argument("--teacher_mode", type=str)
     parser.add_argument("--svd", type=str, default="False")
     args = parser.parse_args()
-    knn_train(args.teacher_mode.lower() == 'true', args.svd.lower() == 'true')
+    if args.teacher_mode == None : teacher_mode = "True"
+    knn_train(teacher_mode=teacher_mode.lower() == 'true',svd= args.svd.lower() == 'true')

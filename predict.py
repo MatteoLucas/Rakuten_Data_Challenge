@@ -1,4 +1,4 @@
-def predict(model_name, teacher_mode):
+def predict(model_name, teacher_mode=True, vote=False):
     '''
     Fonction pour faire une prédiction à partir des modèles entrainés
     Args:
@@ -34,9 +34,9 @@ def predict(model_name, teacher_mode):
     if not teacher_mode and Y_test.ndim > 1 and Y_test.shape[1] > 1:
         Y_test = np.argmax(Y_test, axis=1)
 
-    if not teacher_mode :
+    if not teacher_mode and vote == False :
         print("F1 score macro : ",f1_score(Y_test,Y_pred, average="macro"))
-    else :
+    elif vote == False:
         TP.save_predictions_to_csv(Y_pred, "Y_pred_"+model_name+".csv", X_train)
     return Y_pred, Y_test, X_train
 
@@ -44,6 +44,7 @@ if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("model", type=str)
-    parser.add_argument("teacher_mode", type=str)
+    parser.add_argument("--teacher_mode", type=str)
     args = parser.parse_args()
-    predict(args.model,args.teacher_mode.lower() == 'true')
+    if args.teacher_mode == None : teacher_mode = "True"
+    predict(model_name=args.model,teacher_mode=teacher_mode.lower() == 'true')

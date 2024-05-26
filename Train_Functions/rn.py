@@ -1,4 +1,4 @@
-def rn_train(teacher_mode, svd=False):
+def rn_train(teacher_mode = True, svd=False):
     """Entraine un réseau de neurones pour une classification multi-classes et le sauvegarde"""
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.layers import Dense, Dropout
@@ -65,7 +65,8 @@ def rn_train(teacher_mode, svd=False):
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("teacher_mode", type=str)
+    parser.add_argument("--teacher_mode", type=str)
     parser.add_argument("--svd", type=str, default="False")
     args = parser.parse_args()
-    rn_train(args.teacher_mode.lower() == 'true', args.svd.lower() == 'true')
+    if args.teacher_mode == None : teacher_mode = "True"
+    rn_train(teacher_mode=teacher_mode.lower() == 'true',svd= args.svd.lower() == 'true')

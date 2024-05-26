@@ -20,16 +20,16 @@ Le code permet de faire différentes choses :
 ### Entrainement d'un modèle
 Pour entrainer un modèle, il suffit de lancer dans le répertoire du projet :
 ```bash
-python Train_Functions/model.py teacher_mode
+python Train_Functions/model.py --teacher_mode Bool
 ```
 En remplaçant : 
 - `model` par le nom du modèle à entrainer : `svm`, `rf`, `knn`, `rn`, `gb`.
-- `teacher_mode` par `True` ou `False` : en mode `True`, le modèle sera entrainé sur la totalité de `X_train.csv`, alors qu'en mode `False`, une partie de `X_train.csv` sera conservée pour les tests.  
+- `Bool` par `True` ou `False` : en mode `True`, le modèle sera entrainé sur la totalité de `X_train.csv`, alors qu'en mode `False`, une partie de `X_train.csv` sera conservée pour les tests. La valeur par défault est `True`.  
 
 Par exemple :
 ```bash
-python Train_Functions/knn.py False
-python Train_Functions/svm.py True
+python Train_Functions/knn.py --teacher_mode False
+python Train_Functions/svm.py
 ```
 #### Entrainement avec réduction de la dimension
 Il est possible d'entraîner un modèle avec une réduction de la dimension par la méthode SVD.  
@@ -46,21 +46,21 @@ python Train_Functions/svd.py --n_components 60000
 Maintenant, pour entraîner un modèle avec une réduction de la dimension, il suffit de rajouter `--svd True` à la fin de la commande.  
 Par exemple :
 ```bash
-python Train_Functions/svm.py True --svd True
+python Train_Functions/svm.py --svd True
 ```
 Dans cet exemple, le modèle créé sera nommé `svd_svm`, c'est le nom qu'il faudra utiliser pour la prédiction.
 ### Prédiction
 Pour effectuer une prédiction à partir d'un modèle entraîné, il suffit de lancer dans le répertoire du projet :
 ```bash
-python ./predict.py model teacher_mode
+python ./predict.py model --teacher_mode False
 ```
 En remplaçant : 
 - `model` par le nom du modèle à partir duquel faire la prédiction : `svm`, `rf`, `knn`, `rn`, `gb`.
-- `teacher_mode` par `True` ou `False` : en mode `True`, le modèle de prédiction sera celui entraîné sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_model.csv` sera créé, alors qu'en mode `False`, le modèle de prédiction sera celui entraîné sur une partie de `X_train.csv` et le programme renverra uniquement le score f1.  
+- `teacher_mode` par `True` ou `False` : en mode `True`, le modèle de prédiction sera celui entraîné sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_model.csv` sera créé, alors qu'en mode `False`, le modèle de prédiction sera celui entraîné sur une partie de `X_train.csv` et le programme renverra uniquement le score f1. La valeur par défault est `True`  
 
 Par exemple :
 ```bash
-python ./predict.py rf True
+python ./predict.py rf
 ```
 
 ### Vote majoritaire

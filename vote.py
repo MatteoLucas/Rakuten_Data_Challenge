@@ -1,4 +1,4 @@
-def majority_vote(models, teacher_mode):
+def majority_vote(models, teacher_mode=True):
     """
     Combine les prédictions de plusieurs modèles par vote majoritaire
     Args :
@@ -12,7 +12,7 @@ def majority_vote(models, teacher_mode):
     from predict import predict
 
     # Empiler les prédictions en une seule matrice
-    Y_pred, Y_test, X_train = predict(models[0], teacher_mode)
+    Y_pred, Y_test, X_train = predict(models[0], teacher_mode, True)
     Y_preds = np.vstack([Y_pred]+[predict(model, teacher_mode)[0] for model in models[1:]])
     
     # Calculer le vote majoritaire pour chaque échantillon
@@ -39,8 +39,8 @@ def majority_vote(models, teacher_mode):
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("list", nargs='+', type=str, help="Une liste de chaînes de caractères à passer à la fonction")
+    parser.add_argument("list", nargs='+', type=str, help="Liste des modèles pour le vote")
+    parser.add_argument("--teacher_mode", type=str)
     args = parser.parse_args()
-    list_model= args.list[:-1]
-    teacher_mode = args.list[-1].lower() == 'true'
-    majority_vote(list_model, teacher_mode)
+    if args.teacher_mode == None : teacher_mode = "True"
+    majority_vote(models = args.list, teacher_mode=teacher_mode.lower() == 'true')
