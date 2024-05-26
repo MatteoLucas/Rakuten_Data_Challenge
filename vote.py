@@ -24,15 +24,10 @@ def majority_vote(models, teacher_mode=True):
 
     Y_final_pred = Y_final_pred_full.ravel()
 
-    model_name = ""
-    for model in models:
-        model_name+=model+"+"
-    model_name = model[:-1]
-
     if not teacher_mode :
         print("F1 score macro : ",f1_score(Y_test,Y_final_pred, average="macro"))
     else :
-        TP.save_predictions_to_csv(Y_final_pred, "Y_pred_"+model_name+".csv", X_train)
+        TP.save_predictions_to_csv(Y_final_pred, "Y_pred_vote.csv", X_train)
 
     return Y_final_pred
 

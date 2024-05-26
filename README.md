@@ -23,8 +23,8 @@ Pour entrainer un modèle, il suffit de lancer dans le répertoire du projet :
 python Train_Functions/model.py --teacher_mode Bool
 ```
 En remplaçant : 
-- `model` par le nom du modèle à entrainer : `svm`, `rf`, `knn`, `rn`, `gb`.
-- `Bool` par `True` ou `False` : en mode `True`, le modèle sera entrainé sur la totalité de `X_train.csv`, alors qu'en mode `False`, une partie de `X_train.csv` sera conservée pour les tests. La valeur par défault est `True`.  
+- `model` par le nom du modèle à entrainer : `svm`, `rf`, `knn`, `rn`, `gb`, `svd_svm`.
+- `Bool` par `True` ou `False` : en mode `True`, le modèle sera entrainé sur la totalité de `X_train.csv`, alors qu'en mode `False`, une partie de `X_train.csv` sera conservée pour les tests. Argument optionnel, la valeur par défault est `True`  
 
 Par exemple :
 ```bash
@@ -52,11 +52,11 @@ Dans cet exemple, le modèle créé sera nommé `svd_svm`, c'est le nom qu'il fa
 ### Prédiction
 Pour effectuer une prédiction à partir d'un modèle entraîné, il suffit de lancer dans le répertoire du projet :
 ```bash
-python ./predict.py model --teacher_mode False
+python ./predict.py model --teacher_mode Bool
 ```
 En remplaçant : 
-- `model` par le nom du modèle à partir duquel faire la prédiction : `svm`, `rf`, `knn`, `rn`, `gb`.
-- `teacher_mode` par `True` ou `False` : en mode `True`, le modèle de prédiction sera celui entraîné sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_model.csv` sera créé, alors qu'en mode `False`, le modèle de prédiction sera celui entraîné sur une partie de `X_train.csv` et le programme renverra uniquement le score f1. La valeur par défault est `True`  
+- `model` par le nom du modèle à partir duquel faire la prédiction : `svm`, `rf`, `knn`, `rn`, `gb`, `svd_svm`.
+- `Bool` par `True` ou `False` : en mode `True`, le modèle de prédiction sera celui entraîné sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_model.csv` sera créé, alors qu'en mode `False`, le modèle de prédiction sera celui entraîné sur une partie de `X_train.csv` et le programme renverra uniquement le score f1. Argument optionnel, la valeur par défault est `True`  
 
 Par exemple :
 ```bash
@@ -66,11 +66,11 @@ python ./predict.py rf
 ### Vote majoritaire
 Il est aussi possible d'effectuer un vote majoritaire entre plusieurs modèles entraînés. Pour ce faire, il suffit de lancer dans le répertoire du projet : 
 ```bash
-python ./vote.py model1 model2 model3 teacher_mode
+python ./vote.py model1 model2 model3 --teacher_mode Bool
 ```
 En remplaçant : 
-- `model1`, `model2`, `model3` par le nom des modèles à partir desquels faire le vote : `svm`, `rf`, `knn`, `rn`, `gb`. Il faut mettre au minimum 2 modèles.
-- `teacher_mode` par `True` ou `False` : en mode `True`, les modèles de prédiction seront ceux entraînés sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_vote.csv` sera créé, alors qu'en mode `False`, les modèles de prédiction seront ceux entraînés sur une partie de `X_train.csv` et le programme renverra uniquement le score f1.  
+- `model1`, `model2`, `model3` par le nom des modèles à partir desquels faire le vote : `svm`, `rf`, `knn`, `rn`, `gb`, `svd_svm`. Il faut mettre au minimum 2 modèles.
+- `Bool` par `True` ou `False` : en mode `True`, les modèles de prédiction seront ceux entraînés sur la totalité de `X_train.csv`, un fichier `Predictions_ForTeacher/Y_pred_vote.csv` sera créé, alors qu'en mode `False`, les modèles de prédiction seront ceux entraînés sur une partie de `X_train.csv` et le programme renverra uniquement le score f1. Argument optionnel, la valeur par défault est `True`  
 
 Par exemple :
 ```bash
@@ -82,6 +82,7 @@ Le tableau ci-dessous regroupe les scores obtenus par nos différents modèles l
 
 | Modèle | Abréviation | Score lors de la soumission |
 |-----------|-----------|-----------|
+| Vote majoritaire : svm gb rf rn svd_svm  | vote | 0,822972819005701  |
 | Support Vector Machine  | svm  | 0,8150772450094129  |
 | Random Forest | rf | 0,7954135737911665 |
 | Gradient Boosting | gb | 0,7857407432117608 |
